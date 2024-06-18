@@ -14,4 +14,5 @@ type User struct {
 	Token        string `json:"token"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt 	 time.Time `json:"updated_at"`
+	AvatarFileName        string `json:"avatar_file_name"`
 }
