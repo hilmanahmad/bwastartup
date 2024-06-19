@@ -11,6 +11,7 @@ type Service interface {
 	Login(input LoginInput) (User, error)
 	IsEmailAvailable(input CheckEmailInput) (bool, error)
 	SaveAvatar(ID int, fileLocation string) (User, error)
+	GetUserByID(ID int) (User, error)
 }
 
 type service struct {
@@ -43,7 +44,7 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	return newUser, nil
 }
 
-func (s *service) Login(input LoginInput) (User, error)  {
+func (s *service) Login(input LoginInput) (User, error) {
 	email := input.Email
 	password := input.Password
 
@@ -64,7 +65,7 @@ func (s *service) Login(input LoginInput) (User, error)  {
 	return user, nil
 }
 
-func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error)  {
+func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
 	email := input.Email
 
 	user, err := s.repository.FindByEmail(email)
@@ -94,5 +95,18 @@ func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
 		return updatedUser, err
 	}
 
-return updatedUser, nil
+	return updatedUser, nil
+}
+
+func (s *service) GetUserByID(ID int) (User, error) {
+	user, err := s.repository.FindByID(ID)
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("No user found on with that ID")
+	}
+
+	return user, nil
 }
