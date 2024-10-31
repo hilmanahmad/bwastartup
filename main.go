@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/belajar_golang?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:ClNkuvocMtaZligshdeOtpPhEwyPeOVh@tcp(junction.proxy.rlwy.net:40084)/railway?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
