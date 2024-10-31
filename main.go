@@ -8,6 +8,7 @@ import (
 	"bwastartup/payment"
 	"bwastartup/transaction"
 	"bwastartup/user"
+	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
 	"strings"
@@ -41,6 +42,7 @@ func main() {
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
+	router.Use(cors.Default())
 	router.Static("/images", "./images")
 	api := router.Group("/api/v1")
 
@@ -48,6 +50,7 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checker", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+	api.POST("/users/fetch", authMiddleware(authService, userService), userHandler.FetchUser)
 	api.GET("/campaigns", authMiddleware(authService, userService), campaignHandler.GetCampaigns)
 	api.GET("/campaigns/:id", authMiddleware(authService, userService), campaignHandler.GetCampaign)
 	api.POST("/campaigns", authMiddleware(authService, userService), campaignHandler.CreateCampaign)
